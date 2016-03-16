@@ -1,0 +1,27 @@
+{
+  "uuid": "c5d90778-593a-4423-a7e9-365c1f5e9eba",
+  "shortName": "Paddy's Day",
+  "longName": "Paddy's Day",
+  "companyName": "Gringer Apps",
+  "versionLabel": "1.0",
+  "sdkVersion": "3",
+  "targetPlatforms": ["basalt", "chalk"],
+  "watchapp": {
+    "watchface": true
+  },
+  "resources": {
+    "media": [
+      {
+        "file": "images/paddy.apng",
+        "name": "PADDY",
+        "type": "raw"
+      },
+      {
+        "file": "images/img_menu.png",
+        "menuIcon": true,
+        "name": "IMG_MENU",
+        "type": "png"
+      }
+    ]
+  }
+}
