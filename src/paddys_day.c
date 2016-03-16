@@ -30,7 +30,7 @@ static void play_gif(void *context){
   }
 }
 
-static void timer_handler(void *context) {
+static void try_play_gif(void *context) {
   if(!playing){
     playing = true;
     app_timer_register(next_delay, play_gif, NULL);
@@ -38,7 +38,7 @@ static void timer_handler(void *context) {
 }
 
 static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
-  app_timer_register(next_delay, timer_handler, NULL);
+  app_timer_register(next_delay, try_play_gif, NULL);
 }
 
 static void update_time() {
@@ -49,7 +49,7 @@ static void update_time() {
            "%H:%M" : "%I:%M", tick_time);
   text_layer_set_text(s_time_layer, s_buffer);
   if(tick_time->tm_min % 5 == 0){
-    app_timer_register(next_delay, timer_handler, NULL);
+    app_timer_register(next_delay, try_play_gif, NULL);
   }
 }
 
@@ -97,6 +97,7 @@ static void init() {
   });
   window_stack_push(s_main_window, true);
   update_time();
+  app_timer_register(next_delay, try_play_gif, NULL);
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
   accel_tap_service_subscribe(accel_tap_handler);
 }
