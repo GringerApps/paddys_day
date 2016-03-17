@@ -2,9 +2,10 @@
 
 Celebrate Saint Patrick’s day with a dancing Irish leprechaun! See him dance every fifth minute or at the flick of your wrist.
 
-Designed by [@AlessioLaiso](https://twitter.com/AlessioLaiso) and [@Theresa_Phelan](https://twitter.com/Theresa_Phelan).
+Go and grab it [here](https://apps.getpebble.com/en_US/application/56e98f4e3b537ac5fc00001b).
 
-Animated by [richkam](richkam.com).
+Design by [@AlessioLaiso](https://twitter.com/AlessioLaiso) and [@Theresa_Phelan](https://twitter.com/Theresa_Phelan).
+Animation by [richkam](richkam.com).
 
 ## Previews
 
