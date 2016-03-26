@@ -13,10 +13,7 @@ bool playing = false;
 
 static void reset_gif(){
   gbitmap_sequence_restart(s_sequence);
-  gbitmap_sequence_update_bitmap_next_frame(s_sequence, s_bitmap, &next_delay);
-  bitmap_layer_set_bitmap(s_bitmap_layer, s_bitmap);
   layer_mark_dirty(bitmap_layer_get_layer(s_bitmap_layer));
-  gbitmap_sequence_restart(s_sequence);
 }
 
 static void play_gif(void *context){
@@ -32,13 +29,16 @@ static void play_gif(void *context){
 
 static void try_play_gif(void *context) {
   if(!playing){
+    if(context != NULL){
+      light_enable_interaction();
+    }
     playing = true;
-    app_timer_register(next_delay, play_gif, NULL);
+    play_gif(NULL);
   }
 }
 
 static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
-  app_timer_register(next_delay, try_play_gif, NULL);
+  app_timer_register(FIRST_DELAY_MS, try_play_gif, NULL);
 }
 
 static void update_time(const bool play_gif) {
@@ -48,7 +48,8 @@ static void update_time(const bool play_gif) {
   strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ? "%H:%M" : "%I:%M", tick_time);
   text_layer_set_text(s_time_layer, s_buffer);
   if(tick_time->tm_min % 5 == 0 && play_gif){
-    app_timer_register(FIRST_DELAY_MS, try_play_gif, NULL);
+    bool enlighten = true;
+    app_timer_register(FIRST_DELAY_MS, try_play_gif, &enlighten);
   }
 }
 
@@ -86,6 +87,7 @@ static void init() {
   gbitmap_sequence_set_play_count(s_sequence, 1);
   const GSize frame_size = gbitmap_sequence_get_bitmap_size(s_sequence);
   s_bitmap = gbitmap_create_blank(frame_size, GBitmapFormat8Bit);
+  gbitmap_sequence_update_bitmap_next_frame(s_sequence, s_bitmap, &next_delay);
 
   s_main_window = window_create();
   window_set_background_color(s_main_window, GColorSpringBud);
