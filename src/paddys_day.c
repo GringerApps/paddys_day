@@ -1,5 +1,7 @@
 #include <pebble.h>
 
+const uint32_t FIRST_DELAY_MS = 10;
+
 static Window *s_main_window;
 static TextLayer *s_time_layer;
 static GBitmapSequence *s_sequence;
@@ -7,7 +9,6 @@ static GBitmap *s_bitmap;
 static BitmapLayer *s_bitmap_layer;
 
 uint32_t next_delay;
-uint32_t first_delay_ms = 10;
 bool playing = false;
 
 static void reset_gif(){
@@ -25,7 +26,6 @@ static void play_gif(void *context){
     app_timer_register(next_delay, play_gif, NULL);
   }else{
     reset_gif();
-    first_delay_ms = 10;
     playing = false;
   }
 }
@@ -41,20 +41,19 @@ static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
   app_timer_register(next_delay, try_play_gif, NULL);
 }
 
-static void update_time() {
+static void update_time(const bool play_gif) {
   const time_t temp = time(NULL);
   const struct tm *tick_time = localtime(&temp);
   static char s_buffer[8];
-  strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ?
-           "%H:%M" : "%I:%M", tick_time);
+  strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ? "%H:%M" : "%I:%M", tick_time);
   text_layer_set_text(s_time_layer, s_buffer);
-  if(tick_time->tm_min % 5 == 0){
-    app_timer_register(next_delay, try_play_gif, NULL);
+  if(tick_time->tm_min % 5 == 0 && play_gif){
+    app_timer_register(FIRST_DELAY_MS, try_play_gif, NULL);
   }
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-  update_time();
+  update_time(true);
 }
 
 static void main_window_load(Window *window) {
@@ -95,9 +94,10 @@ static void init() {
     .unload = main_window_unload
   });
   window_stack_push(s_main_window, true);
-  update_time();
-  app_timer_register(next_delay, try_play_gif, NULL);
+  update_time(false);
+  app_timer_register(FIRST_DELAY_MS, try_play_gif, NULL);
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
+  accel_service_set_sampling_rate(ACCEL_SAMPLING_10HZ);
   accel_tap_service_subscribe(accel_tap_handler);
 }
 
