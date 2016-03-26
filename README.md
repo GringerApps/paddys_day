@@ -9,7 +9,7 @@ Animation by [richkam](richkam.com).
 
 ## Previews
 
-![Preview basalt](./preview~color~rect.gif) ![Preview chalk](./preview~color~round.png)
+![Preview basalt](./design/store/preview~color~rect.gif) ![Preview chalk](./design/store/preview~color~round.png)
 
 ## LICENSE
 
@@ -28,5 +28,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## And happy paddy's day!
 
-![Banner](./banner_2x.png)
-
+![Banner](./design/store/banner_2x.png)
