@@ -54,7 +54,6 @@ static void update_time() {
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "gfesg");
   update_time();
 }
 
@@ -69,7 +68,7 @@ static void main_window_load(Window *window) {
   s_bitmap_layer = bitmap_layer_create(bitmap_layer_bounds);
   reset_gif();
   layer_add_child(window_layer, bitmap_layer_get_layer(s_bitmap_layer));
-  
+
   s_time_layer = text_layer_create(GRect(0, bitmap_size.h, window_size.w, 50));
   text_layer_set_background_color(s_time_layer, GColorSpringBud);
   text_layer_set_text_color(s_time_layer, GColorBlack);
@@ -80,15 +79,15 @@ static void main_window_load(Window *window) {
 
 static void main_window_unload(Window *window) {
   text_layer_destroy(s_time_layer);
-  bitmap_layer_destroy(s_bitmap_layer);  
+  bitmap_layer_destroy(s_bitmap_layer);
 }
 
 static void init() {
   s_sequence = gbitmap_sequence_create_with_resource(RESOURCE_ID_PADDY);
   gbitmap_sequence_set_play_count(s_sequence, 1);
-  const GSize frame_size = gbitmap_sequence_get_bitmap_size(s_sequence);  
+  const GSize frame_size = gbitmap_sequence_get_bitmap_size(s_sequence);
   s_bitmap = gbitmap_create_blank(frame_size, GBitmapFormat8Bit);
-  
+
   s_main_window = window_create();
   window_set_background_color(s_main_window, GColorSpringBud);
   window_set_window_handlers(s_main_window, (WindowHandlers) {
